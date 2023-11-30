@@ -21,7 +21,7 @@ volatility -f xxx.raw imageinfo
 
 ### 1- 获取注册表地址
 
-获取注册表，所需信息在 \SystemRoot\System31\Config\DEFAULT
+获取注册表，所需信息在 \SystemRoot\System32\Config\SOFTWARE
 
 ```
 volatility -f xxx.raw --profile=Win7SP1x64 hivelist
