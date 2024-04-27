@@ -85,6 +85,8 @@ Bcrypt加密方式,用hackcat跑一下,字典有用rockyou.txt,只有matthew用�
 
 然后在分析出来的nginx配置文件中,可以发现还有一个portainer服务 portainer-administration.runner.htb&#x20;
 
+<figure><img src="../.gitbook/assets/{6B239287-BC3F-42ac-8664-B8B0BBE07C0D}.png" alt=""><figcaption></figcaption></figure>
+
 这里就有些思路了,如果portainer如果有操作docker的权限,就可以创建一个volumn,指向宿主机的根目录,然后挂载到一个容器上,就可以通过这个容器访问到root权限下的文件.
 
 这里偷懒了,在走到这步时候,已经有人创建一个容器了,成功在/mnt/root下访问到根目录,在/mnt/root/root下发现root.txt文件,拿下第二个flag!
