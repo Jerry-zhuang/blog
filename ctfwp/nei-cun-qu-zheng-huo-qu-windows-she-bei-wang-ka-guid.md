@@ -17,7 +17,7 @@
 volatility -f xxx.raw imageinfo
 ```
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### 1- 获取注册表地址
 
@@ -27,7 +27,7 @@ volatility -f xxx.raw imageinfo
 volatility -f xxx.raw --profile=Win7SP1x64 hivelist
 ```
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### 2- 获取网卡信息
 
@@ -41,5 +41,5 @@ Microsoft\Windows NT\CurrentVersion\NetworkCards
 $ volatility -f xxx,raw --profile=Win7SP1x64 -o 0xfffffa001b40010 printkey -K "Microsoft Windows NT CurrentVersion\NetworkCards\8
 ```
 
-<figure><img src="../.gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
