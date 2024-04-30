@@ -6,8 +6,8 @@ description: Hack the Box 第五赛季
 
 ## Week 1 - Runner
 
-{% content-ref url="week-1-runner.md" %}
-[week-1-runner.md](week-1-runner.md)
+{% content-ref url="../season-5-week-1-runner.md" %}
+[season-5-week-1-runner.md](../season-5-week-1-runner.md)
 {% endcontent-ref %}
 
 <figure><img src="../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
@@ -18,4 +18,4 @@ description: Hack the Box 第五赛季
 [week-2-intuition.md](week-2-intuition.md)
 {% endcontent-ref %}
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>

