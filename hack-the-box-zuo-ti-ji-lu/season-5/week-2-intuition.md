@@ -609,4 +609,12 @@ sqlite3 users.db
 
 <figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
-破解电脑现在不太行, 有点跑不动😭
+用hashcat跑一下：
+
+```
+.\hashcat.exe -a 0 -m 30120 --force .\hashfile\hash.txt .\wordlist\rockyou.txt
+```
+
+<figure><img src="../../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
+
+成功跑出密码adam gray.
