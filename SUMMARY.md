@@ -37,3 +37,7 @@
 * [端口服务](shen-tou-xue-xi-bi-ji/duan-kou-fu-wu/README.md)
   * [25 - SMTP](shen-tou-xue-xi-bi-ji/duan-kou-fu-wu/25-smtp/README.md)
     * [钓鱼邮件](shen-tou-xue-xi-bi-ji/duan-kou-fu-wu/25-smtp/diao-yu-you-jian.md)
+
+## Java 白盒测试 <a href="#javawhite" id="javawhite"></a>
+
+* [命令注入](javawhite/ming-ling-zhu-ru.md)
